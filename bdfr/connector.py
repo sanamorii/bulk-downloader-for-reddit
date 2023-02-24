@@ -433,7 +433,8 @@ class RedditConnector(metaclass=ABCMeta):
         if subreddit.display_name in ("all", "friends"):
             return
         try:
-            assert subreddit.id
+            if subreddit.id:
+                return
         except prawcore.NotFound:
             raise errors.BulkDownloaderException(f"Source {subreddit.display_name} cannot be found")
         except prawcore.Redirect:
