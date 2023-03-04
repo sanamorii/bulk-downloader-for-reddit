@@ -5,9 +5,9 @@ import importlib.resources
 import itertools
 import logging
 import logging.handlers
+import platform
 import re
 import shutil
-import socket
 from abc import ABCMeta, abstractmethod
 from collections.abc import Callable, Iterable, Iterator
 from datetime import datetime
@@ -21,6 +21,7 @@ import praw.exceptions
 import praw.models
 import prawcore
 
+from bdfr import __version__
 from bdfr import exceptions as errors
 from bdfr.configuration import Configuration
 from bdfr.download_filter import DownloadFilter
@@ -75,6 +76,7 @@ class RedditConnector(metaclass=ABCMeta):
         self.file_name_formatter = self.create_file_name_formatter()
         logger.log(9, "Create file name formatter")
 
+        self.user_agent = praw.const.USER_AGENT_FORMAT.format(":".join([platform.uname()[0], __package__, __version__]))
         self.create_reddit_instance()
         self.args.user = list(filter(None, [self.resolve_user_name(user) for user in self.args.user]))
 
@@ -138,6 +140,7 @@ class RedditConnector(metaclass=ABCMeta):
                     scopes,
                     self.cfg_parser.get("DEFAULT", "client_id"),
                     self.cfg_parser.get("DEFAULT", "client_secret"),
+                    user_agent=self.user_agent,
                 )
                 token = oauth2_authenticator.retrieve_new_token()
                 self.cfg_parser["DEFAULT"]["user_token"] = token
@@ -149,7 +152,7 @@ class RedditConnector(metaclass=ABCMeta):
             self.reddit_instance = praw.Reddit(
                 client_id=self.cfg_parser.get("DEFAULT", "client_id"),
                 client_secret=self.cfg_parser.get("DEFAULT", "client_secret"),
-                user_agent=socket.gethostname(),
+                user_agent=self.user_agent,
                 token_manager=token_manager,
             )
         else:
@@ -158,7 +161,7 @@ class RedditConnector(metaclass=ABCMeta):
             self.reddit_instance = praw.Reddit(
                 client_id=self.cfg_parser.get("DEFAULT", "client_id"),
                 client_secret=self.cfg_parser.get("DEFAULT", "client_secret"),
-                user_agent=socket.gethostname(),
+                user_agent=self.user_agent,
             )
 
     def retrieve_reddit_lists(self) -> list[praw.models.ListingGenerator]:
