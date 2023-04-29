@@ -27,7 +27,7 @@ class DownloadFactory:
         sanitised_url = DownloadFactory.sanitise_url(url).lower()
         if re.match(r"(i\.|m\.|o\.)?imgur", sanitised_url):
             return Imgur
-        elif re.match(r"(i\.|thumbs\d\.|v\d\.)?(redgifs|gifdeliverynetwork)", sanitised_url):
+        elif re.match(r"(i\.|thumbs\d{1,2}\.|v\d\.)?(redgifs|gifdeliverynetwork)", sanitised_url):
             return Redgifs
         elif re.match(r"(thumbs\.|giant\.)?gfycat\.", sanitised_url):
             return Gfycat
