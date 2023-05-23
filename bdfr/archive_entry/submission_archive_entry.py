@@ -11,11 +11,15 @@ logger = logging.getLogger(__name__)
 
 
 class SubmissionArchiveEntry(BaseArchiveEntry):
-    def __init__(self, submission: praw.models.Submission):
+    def __init__(self, submission: praw.models.Submission, include_comments: bool):
         super(SubmissionArchiveEntry, self).__init__(submission)
+        self._include_comments = include_comments
 
     def compile(self) -> dict:
-        comments = self._get_comments()
+        if self._include_comments:
+            comments = self._get_comments()
+        else:
+            comments = []
         self._get_post_details()
         out = self.post_details
         out["comments"] = comments
