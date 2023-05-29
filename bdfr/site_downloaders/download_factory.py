@@ -12,6 +12,7 @@ from bdfr.site_downloaders.erome import Erome
 from bdfr.site_downloaders.fallback_downloaders.ytdlp_fallback import YtdlpFallback
 from bdfr.site_downloaders.gallery import Gallery
 from bdfr.site_downloaders.gfycat import Gfycat
+from bdfr.site_downloaders.imgchest import Imgchest
 from bdfr.site_downloaders.imgur import Imgur
 from bdfr.site_downloaders.pornhub import PornHub
 from bdfr.site_downloaders.redgifs import Redgifs
@@ -45,6 +46,8 @@ class DownloadFactory:
             return Gallery
         elif re.match(r"patreon\.com.*", sanitised_url):
             return Gallery
+        elif re.match(r"imgchest\.com/p/", sanitised_url):
+            return Imgchest
         elif re.match(r"reddit\.com/r/", sanitised_url):
             return SelfPost
         elif re.match(r"(m\.)?youtu\.?be", sanitised_url):
