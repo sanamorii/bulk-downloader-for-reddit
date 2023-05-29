@@ -16,14 +16,14 @@ logger = logging.getLogger(__name__)
 
 
 class OAuth2Authenticator:
-    def __init__(self, wanted_scopes: set[str], client_id: str, client_secret: str, user_agent: str):
+    def __init__(self, wanted_scopes: set[str], client_id: str, client_secret: str, user_agent: str) -> None:
         self._check_scopes(wanted_scopes, user_agent)
         self.scopes = wanted_scopes
         self.client_id = client_id
         self.client_secret = client_secret
 
     @staticmethod
-    def _check_scopes(wanted_scopes: set[str], user_agent: str):
+    def _check_scopes(wanted_scopes: set[str], user_agent: str) -> None:
         try:
             response = requests.get(
                 "https://www.reddit.com/api/v1/scopes.json",
@@ -86,18 +86,18 @@ class OAuth2Authenticator:
         return client
 
     @staticmethod
-    def send_message(client: socket.socket, message: str = ""):
+    def send_message(client: socket.socket, message: str = "") -> None:
         client.send(f"HTTP/1.1 200 OK\r\n\r\n{message}".encode())
         client.close()
 
 
 class OAuth2TokenManager(praw.reddit.BaseTokenManager):
-    def __init__(self, config: configparser.ConfigParser, config_location: Path):
+    def __init__(self, config: configparser.ConfigParser, config_location: Path) -> None:
         super().__init__()
         self.config = config
         self.config_location = config_location
 
-    def pre_refresh_callback(self, authorizer: praw.reddit.Authorizer):
+    def pre_refresh_callback(self, authorizer: praw.reddit.Authorizer) -> None:
         if authorizer.refresh_token is None:
             if self.config.has_option("DEFAULT", "user_token"):
                 authorizer.refresh_token = self.config.get("DEFAULT", "user_token")
@@ -105,7 +105,7 @@ class OAuth2TokenManager(praw.reddit.BaseTokenManager):
             else:
                 raise RedditAuthenticationError("No auth token loaded in configuration")
 
-    def post_refresh_callback(self, authorizer: praw.reddit.Authorizer):
+    def post_refresh_callback(self, authorizer: praw.reddit.Authorizer) -> None:
         self.config.set("DEFAULT", "user_token", authorizer.refresh_token)
         with Path(self.config_location).open(mode="w") as file:
             self.config.write(file, True)
