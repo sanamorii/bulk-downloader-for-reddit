@@ -12,13 +12,14 @@ logger = logging.getLogger(__name__)
 
 
 class Configuration(Namespace):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.authenticate = False
         self.config = None
         self.opts: Optional[str] = None
         self.directory: str = "."
         self.disable_module: list[str] = []
+        self.downvoted: bool = False
         self.exclude_id = []
         self.exclude_id_file = []
         self.file_scheme: str = "{REDDITOR}_{TITLE}_{POSTID}"
@@ -58,7 +59,7 @@ class Configuration(Namespace):
         self.format = "json"
         self.comment_context: bool = False
 
-    def process_click_arguments(self, context: click.Context):
+    def process_click_arguments(self, context: click.Context) -> None:
         if context.params.get("opts") is not None:
             self.parse_yaml_options(context.params["opts"])
         for arg_key in context.params.keys():
@@ -71,7 +72,7 @@ class Configuration(Namespace):
                 continue
             setattr(self, arg_key, val)
 
-    def parse_yaml_options(self, file_path: str):
+    def parse_yaml_options(self, file_path: str) -> None:
         yaml_file_loc = Path(file_path)
         if not yaml_file_loc.exists():
             logger.error(f"No YAML file found at {yaml_file_loc}")

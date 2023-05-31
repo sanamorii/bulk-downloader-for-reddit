@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class SubmissionArchiveEntry(BaseArchiveEntry):
-    def __init__(self, submission: praw.models.Submission):
+    def __init__(self, submission: praw.models.Submission) -> None:
         super().__init__(submission)
 
     def compile(self) -> dict:
@@ -20,7 +20,7 @@ class SubmissionArchiveEntry(BaseArchiveEntry):
         out["comments"] = comments
         return out
 
-    def _get_post_details(self):
+    def _get_post_details(self) -> None:
         self.post_details = {
             "title": self.source.title,
             "name": self.source.name,
