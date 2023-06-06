@@ -50,7 +50,7 @@ class OAuth2Authenticator:
             client_id=self.client_id,
             client_secret=self.client_secret,
         )
-        state = str(random.randint(0, 65000))
+        state = str(random.randint(0, 65000))  # noqa: S311
         url = reddit.auth.url(self.scopes, state, "permanent")
         logger.warning("Authentication action required before the program can proceed")
         logger.warning(f"Authenticate at {url}")
