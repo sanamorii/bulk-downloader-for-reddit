@@ -10,6 +10,7 @@ from bdfr.site_downloaders.delay_for_reddit import DelayForReddit
 from bdfr.site_downloaders.direct import Direct
 from bdfr.site_downloaders.erome import Erome
 from bdfr.site_downloaders.fallback_downloaders.ytdlp_fallback import YtdlpFallback
+from bdfr.site_downloaders.flickr import Flickr
 from bdfr.site_downloaders.gallery import Gallery
 from bdfr.site_downloaders.gfycat import Gfycat
 from bdfr.site_downloaders.imgchest import Imgchest
@@ -42,6 +43,8 @@ class DownloadFactory:
             return Catbox
         elif re.match(r"delayforreddit\.com", sanitised_url):
             return DelayForReddit
+        elif re.match(r"flickr\.com", sanitised_url) or re.match(r"flic\.kr", sanitised_url):
+            return Flickr
         elif re.match(r"reddit\.com/gallery/.*", sanitised_url):
             return Gallery
         elif re.match(r"patreon\.com.*", sanitised_url):
