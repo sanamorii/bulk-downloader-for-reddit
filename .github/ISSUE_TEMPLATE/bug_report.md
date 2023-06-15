@@ -29,6 +29,8 @@ Paste here the command(s) that causes the bug
 
 ## Logs
 
+These are my **unaltered** logs:
+
 ```text
 Paste the log output here.
 ```
