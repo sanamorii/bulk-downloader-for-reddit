@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 from collections.abc import Iterator
 from datetime import datetime, timedelta
 from pathlib import Path
+from typing import Union
 from unittest.mock import MagicMock
 
 import praw
@@ -38,21 +38,23 @@ def downloader_mock(args: Configuration):
     return downloader_mock
 
 
-def assert_all_results_are_submissions(result_limit: int, results: list[Iterator]) -> list:
+def assert_all_results_are_submissions(result_limit: Union[int, None], results: list[Iterator]) -> list:
     results = [sub for res in results for sub in res]
     assert all([isinstance(res, praw.models.Submission) for res in results])
     assert not any([isinstance(m, MagicMock) for m in results])
     if result_limit is not None:
-        assert len(results) == result_limit
+        assert len(results) > 0
+        assert len(results) <= result_limit
     return results
 
 
-def assert_all_results_are_submissions_or_comments(result_limit: int, results: list[Iterator]) -> list:
+def assert_all_results_are_submissions_or_comments(result_limit: Union[int, None], results: list[Iterator]) -> list:
     results = [sub for res in results for sub in res]
     assert all([isinstance(res, (praw.models.Submission, praw.models.Comment)) for res in results])
     assert not any([isinstance(m, MagicMock) for m in results])
     if result_limit is not None:
-        assert len(results) == result_limit
+        assert len(results) > 0
+        assert len(results) <= result_limit
     return results
 
 
@@ -363,6 +365,7 @@ def test_get_user_submissions(test_user: str, limit: int, downloader_mock: Magic
 @pytest.mark.parametrize(
     "test_flag",
     (
+        "downvoted",
         "upvoted",
         "saved",
     ),

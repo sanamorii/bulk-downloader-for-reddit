@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 import re
 import shutil
@@ -29,7 +28,8 @@ def create_basic_args_for_archive_runner(test_args: list[str], run_path: Path):
         str(Path(run_path, "test_config.cfg")),
         "--log",
         str(Path(run_path, "test_log.txt")),
-    ] + test_args
+        *test_args,
+    ]
     return out
 
 

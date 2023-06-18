@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 import shutil
 from pathlib import Path
+from sys import platform
 from unittest.mock import MagicMock, patch
 
 import prawcore
@@ -28,7 +28,8 @@ def create_basic_args_for_download_runner(test_args: list[str], run_path: Path):
         str(Path(run_path, "test_config.cfg")),
         "--log",
         str(Path(run_path, "test_log.txt")),
-    ] + test_args
+        *test_args,
+    ]
     return out
 
 
@@ -160,6 +161,7 @@ def test_cli_download_multireddit_nonexistent(test_args: list[str], tmp_path: Pa
     "test_args",
     (
         ["--user", "djnish", "--submitted", "--user", "FriesWithThat", "-L", 10],
+        ["--user", "me", "--downvoted", "--authenticate", "-L", 10],
         ["--user", "me", "--upvoted", "--authenticate", "-L", 10],
         ["--user", "me", "--saved", "--authenticate", "-L", 10],
         ["--user", "me", "--submitted", "--authenticate", "-L", 10],
@@ -186,7 +188,7 @@ def test_cli_download_user_data_bad_me_unauthenticated(test_args: list[str], tmp
     test_args = create_basic_args_for_download_runner(test_args, tmp_path)
     result = runner.invoke(cli, test_args)
     assert result.exit_code == 0
-    assert 'To use "me" as a user, an authenticated Reddit instance must be used' in result.output
+    assert "To use 'me' as a user, an authenticated Reddit instance must be used" in result.output
 
 
 @pytest.mark.online
@@ -218,7 +220,7 @@ def test_cli_download_download_filters(test_args: list[str], tmp_path: Path):
     test_args = create_basic_args_for_download_runner(test_args, tmp_path)
     result = runner.invoke(cli, test_args)
     assert result.exit_code == 0
-    assert any((string in result.output for string in ("Download filter removed ", "filtered due to URL")))
+    assert any(string in result.output for string in ("Download filter removed ", "filtered due to URL"))
 
 
 @pytest.mark.online
@@ -426,6 +428,7 @@ def test_cli_download_user_reddit_server_error(test_args: list[str], response: i
 @pytest.mark.online
 @pytest.mark.reddit
 @pytest.mark.skipif(not does_test_config_exist, reason="A test config file is required for integration tests")
+@pytest.mark.skipif(platform == "darwin", reason="Test hangs on macos github")
 @pytest.mark.parametrize(
     "test_args",
     (
@@ -440,3 +443,17 @@ def test_cli_download_explicit_filename_restriction_scheme(test_args: list[str],
     assert result.exit_code == 0
     assert "Downloaded submission" in result.output
     assert "Forcing Windows-compatible filenames" in result.output
+
+
+@pytest.mark.online
+@pytest.mark.reddit
+@pytest.mark.skipif(not does_test_config_exist, reason="A test config file is required for integration tests")
+@pytest.mark.parametrize("test_args", (["--link", "ehqt2g", "--link", "ehtuv8", "--no-dupes"],))
+def test_cli_download_no_empty_dirs(test_args: list[str], tmp_path: Path):
+    runner = CliRunner()
+    test_args = create_basic_args_for_download_runner(test_args, tmp_path)
+    result = runner.invoke(cli, test_args)
+    assert result.exit_code == 0
+    assert "downloaded elsewhere" in result.output
+    assert Path(tmp_path, "EmpireDidNothingWrong").exists()
+    assert not Path(tmp_path, "StarWarsEU").exists()
