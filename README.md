@@ -292,6 +292,9 @@ The following options are for the `archive` command specifically.
 - `--comment-context`
     - This option will, instead of downloading an individual comment, download the submission that comment is a part of
     - May result in a longer run time as it retrieves much more data
+- `--skip-comments`
+    - Skip downloading all comments. This will result in a much shorter runtime.
+    - Not compatible with --comment-context
 
 ### Cloner Options
 

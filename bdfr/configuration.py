@@ -58,6 +58,7 @@ class Configuration(Namespace):
         self.all_comments = False
         self.format = "json"
         self.comment_context: bool = False
+        self.skip_comments = False
 
     def process_click_arguments(self, context: click.Context) -> None:
         if context.params.get("opts") is not None:
