@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class SubmissionArchiveEntry(BaseArchiveEntry):
-    def __init__(self, submission: praw.models.Submission, include_comments: bool) -> None:
+    def __init__(self, submission: praw.models.Submission, include_comments: bool = True) -> None:
         super().__init__(submission)
         self._include_comments = include_comments
 
