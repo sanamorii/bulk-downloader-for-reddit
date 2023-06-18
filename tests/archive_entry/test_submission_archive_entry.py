@@ -18,6 +18,16 @@ def test_get_comments(test_submission_id: str, min_comments: int, reddit_instanc
 
 @pytest.mark.online
 @pytest.mark.reddit
+@pytest.mark.parametrize(("test_submission_id", "min_comments"), (("m3reby", 27),))
+def test_skip_comments(test_submission_id: str, min_comments: int, reddit_instance: praw.Reddit):
+    test_submission = reddit_instance.submission(id=test_submission_id)
+    test_archive_entry = SubmissionArchiveEntry(test_submission, false)
+    results = test_archive_entry._get_comments()
+    assert len(results) == 0
+
+
+@pytest.mark.online
+@pytest.mark.reddit
 @pytest.mark.parametrize(
     ("test_submission_id", "expected_dict"),
     (
