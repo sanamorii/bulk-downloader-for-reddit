@@ -73,7 +73,10 @@ class Archiver(RedditConnector):
                 results.append(sort(self.reddit_instance.redditor(user).comments, limit=self.args.limit))
         return results
 
-    def _pull_lever_entry_factory(self, praw_item: Union[praw.models.Submission, praw.models.Comment]) -> BaseArchiveEntry:
+    def _pull_lever_entry_factory(
+        self,
+        praw_item: Union[praw.models.Submission, praw.models.Comment],
+    ) -> BaseArchiveEntry:
         if isinstance(praw_item, praw.models.Submission):
             return SubmissionArchiveEntry(praw_item, not self.args.skip_comments)
         elif isinstance(praw_item, praw.models.Comment):
