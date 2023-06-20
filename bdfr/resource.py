@@ -19,7 +19,11 @@ logger = logging.getLogger(__name__)
 
 class Resource:
     def __init__(
-        self, source_submission: Submission, url: str, download_function: Callable, extension: str = None
+        self,
+        source_submission: Submission,
+        url: str,
+        download_function: Callable,
+        extension: Optional[str] = None,
     ) -> None:
         self.source_submission = source_submission
         self.content: Optional[bytes] = None

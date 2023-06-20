@@ -25,7 +25,11 @@ class BaseDownloader(ABC):
         raise NotImplementedError
 
     @staticmethod
-    def retrieve_url(url: str, cookies: dict = None, headers: dict = None) -> requests.Response:
+    def retrieve_url(
+        url: str,
+        cookies: Optional[dict] = None,
+        headers: Optional[dict] = None,
+    ) -> requests.Response:
         try:
             res = requests.get(url, cookies=cookies, headers=headers, timeout=10)
         except requests.exceptions.RequestException as e:
@@ -39,7 +43,12 @@ class BaseDownloader(ABC):
         return res
 
     @staticmethod
-    def post_url(url: str, cookies: dict = None, headers: dict = None, payload: dict = None) -> requests.Response:
+    def post_url(
+        url: str,
+        cookies: Optional[dict] = None,
+        headers: Optional[dict] = None,
+        payload: Optional[dict] = None,
+    ) -> requests.Response:
         try:
             res = requests.post(url, cookies=cookies, headers=headers, json=payload, timeout=10)
         except requests.exceptions.RequestException as e:
@@ -53,7 +62,7 @@ class BaseDownloader(ABC):
         return res
 
     @staticmethod
-    def head_url(url: str, cookies: dict = None, headers: dict = None) -> requests.Response:
+    def head_url(url: str, cookies: Optional[dict] = None, headers: Optional[dict] = None) -> requests.Response:
         try:
             res = requests.head(url, cookies=cookies, headers=headers, timeout=10)
         except requests.exceptions.RequestException as e:
