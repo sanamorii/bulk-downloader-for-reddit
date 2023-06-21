@@ -171,7 +171,7 @@ def cli_clone(context: click.Context, **_) -> None:
         logger.info("Program complete - BDFR Cloner v{__version__}")
 
 
-@cli.command("completion")
+@cli.command("completions")
 @click.argument("shell", type=click.Choice(("all", "bash", "fish", "zsh"), case_sensitive=False), default="all")
 @click.help_option("-h", "--help")
 @click.option("-u", "--uninstall", is_flag=True, default=False, help="Uninstall completion")
