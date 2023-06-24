@@ -30,6 +30,6 @@ def test_yaml_file_read():
     file = "./tests/yaml_test_configuration.yaml"
     test_config = Configuration()
     test_config.parse_yaml_options(file)
-    assert test_config.subreddit == ["EarthPorn", "TwoXChromosomes", "Mindustry"]
+    assert test_config.subreddit == ["EarthPorn", "TwoXChromosomes", "EmpireDidNothingWrong"]
     assert test_config.sort == "new"
     assert test_config.limit == 10
