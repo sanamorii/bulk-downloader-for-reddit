@@ -56,7 +56,9 @@ class Configuration(Namespace):
 
         # Archiver-specific options
         self.all_comments = False
-        self.format = "json"
+        self.format = [
+            "json",
+        ]
         self.comment_context: bool = False
         self.skip_comments = False
 
