@@ -6,6 +6,7 @@ import urllib.parse
 from bdfr.exceptions import NotADownloadableLinkError
 from bdfr.site_downloaders.base_downloader import BaseDownloader
 from bdfr.site_downloaders.catbox import Catbox
+from bdfr.site_downloaders.chevereto import Chevereto
 from bdfr.site_downloaders.delay_for_reddit import DelayForReddit
 from bdfr.site_downloaders.direct import Direct
 from bdfr.site_downloaders.erome import Erome
@@ -15,7 +16,6 @@ from bdfr.site_downloaders.gallery import Gallery
 from bdfr.site_downloaders.gfycat import Gfycat
 from bdfr.site_downloaders.imgchest import Imgchest
 from bdfr.site_downloaders.imgur import Imgur
-from bdfr.site_downloaders.nsfw_pics import NsfwPics
 from bdfr.site_downloaders.pornhub import PornHub
 from bdfr.site_downloaders.redgifs import Redgifs
 from bdfr.site_downloaders.self_post import SelfPost
@@ -42,6 +42,8 @@ class DownloadFactory:
             return Erome
         elif re.match(r"catbox\.moe", sanitised_url):
             return Catbox
+        elif re.match(r"lensdump\.com", sanitised_url) or re.match(r"nsfw\.pics", sanitised_url):
+            return Chevereto
         elif re.match(r"delayforreddit\.com", sanitised_url):
             return DelayForReddit
         elif re.match(r"flickr\.com", sanitised_url) or re.match(r"flic\.kr", sanitised_url):
@@ -52,8 +54,6 @@ class DownloadFactory:
             return Gallery
         elif re.match(r"imgchest\.com/p/", sanitised_url):
             return Imgchest
-        elif re.match(r"nsfw\.pics", sanitised_url):
-            return NsfwPics
         elif re.match(r"reddit\.com/r/", sanitised_url):
             return SelfPost
         elif re.match(r"(m\.)?youtu\.?be", sanitised_url):
