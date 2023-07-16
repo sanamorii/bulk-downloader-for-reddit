@@ -135,6 +135,12 @@ class RedditConnector(metaclass=ABCMeta):
             logger.debug("Using authenticated Reddit instance")
             client_id = self.cfg_parser.get("DEFAULT", "client_id")
             client_secret = self.cfg_parser.get("DEFAULT", "client_secret", fallback=None)
+            if client_id == "U-6gk4ZCh3IeNQ":
+                logger.warning(
+                    "You are using the default app ID for the BDFR; this will result in you sharing a request quota"
+                    " with every other user. It is recommended to create your own app and put the ID and secret"
+                    " in the configuration file"
+                )
             if client_secret and client_secret.lower() == "none":
                 client_secret = None
             if not self.cfg_parser.has_option("DEFAULT", "user_token"):
@@ -162,6 +168,9 @@ class RedditConnector(metaclass=ABCMeta):
             )
         else:
             logger.debug("Using unauthenticated Reddit instance")
+            logger.warning(
+                "Using an unauthenticated app like this will result in Reddit limiting queries to 10 requests a minute"
+            )
             self.authenticated = False
             client_secret = self.cfg_parser.get("DEFAULT", "client_secret", fallback=None)
             if client_secret and client_secret.lower() == "none":
