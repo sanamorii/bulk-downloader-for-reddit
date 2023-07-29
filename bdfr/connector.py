@@ -165,6 +165,7 @@ class RedditConnector(metaclass=ABCMeta):
                 client_secret=client_secret,
                 user_agent=self.user_agent,
                 token_manager=token_manager,
+                ratelimit_seconds=120,
             )
         else:
             logger.debug("Using unauthenticated Reddit instance")
@@ -179,6 +180,7 @@ class RedditConnector(metaclass=ABCMeta):
                 client_id=self.cfg_parser.get("DEFAULT", "client_id"),
                 client_secret=client_secret,
                 user_agent=self.user_agent,
+                ratelimit_seconds=120,
             )
 
     def retrieve_reddit_lists(self) -> list[praw.models.ListingGenerator]:
