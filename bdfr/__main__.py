@@ -165,10 +165,10 @@ def cli_clone(context: click.Context, **_) -> None:
         reddit_scraper = RedditCloner(config, [stream])
         reddit_scraper.download()
     except Exception:
-        logger.exception("Scraper exited unexpectedly - BDFR Scraper v{__version__}")
+        logger.exception(f"Scraper exited unexpectedly - BDFR Scraper v{__version__}")
         raise
     else:
-        logger.info("Program complete - BDFR Cloner v{__version__}")
+        logger.info(f"Program complete - BDFR Cloner v{__version__}")
 
 
 @cli.command("completions")
