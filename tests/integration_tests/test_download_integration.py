@@ -41,8 +41,6 @@ def create_basic_args_for_download_runner(test_args: list[str], run_path: Path):
     (
         ["-s", "EmpireDidNothingWrong", "-L", 3],
         ["-s", "r/EmpireDidNothingWrong", "-L", 3],
-        ["-s", "r/EmpireDidNothingWrong", "-L", 3],
-        ["-s", "EmpireDidNothingWrong", "-L", 3],
         ["-s", "https://www.reddit.com/r/TrollXChromosomes/", "-L", 3],
         ["-s", "r/TrollXChromosomes/", "-L", 3],
         ["-s", "TrollXChromosomes/", "-L", 3],
