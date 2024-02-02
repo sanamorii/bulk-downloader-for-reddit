@@ -45,7 +45,7 @@ dev = [
     "black>=23.3.0",
     "pre-commit>=3.0.4",
     "pytest>=7.2.1",
-    "ruff>=0.0.272",
+    "ruff>=0.1.13",
     "tox>=3.27.1",
 ]
 
@@ -92,7 +92,6 @@ exclude = ["scripts/tests"]
 external = ["FURB123"]
 flake8-annotations = {"allow-star-arg-any" = true, "suppress-dummy-args" = true}
 flake8-pytest-style = {"parametrize-values-type" = "tuple", "mark-parentheses" = false}
-format = "grouped"
 ignore = ["ANN101","B904","N818","RET505"]
 line-length = 120
 per-file-ignores={"tests/*"=["ANN","S101","S105","S106"], "scripts/*"=["INP","S105","S106"]}
