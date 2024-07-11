@@ -46,6 +46,8 @@ _common_options = [
     click.option("-t", "--time", type=click.Choice(("all", "hour", "day", "week", "month", "year")), default=None),
     click.option("-u", "--user", type=str, multiple=True, default=None),
     click.option("-v", "--verbose", default=None, count=True),
+
+    click.option("-f", "--file", default=None, type=str)
 ]
 
 _downloader_options = [

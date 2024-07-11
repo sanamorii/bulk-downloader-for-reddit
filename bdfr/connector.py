@@ -9,6 +9,7 @@ import logging.handlers
 import re
 import shutil
 import socket
+import csv
 from abc import ABCMeta, abstractmethod
 from collections.abc import Callable, Iterable, Iterator
 from datetime import datetime
@@ -173,6 +174,8 @@ class RedditConnector(metaclass=ABCMeta):
         logger.log(9, "Retrieved user data")
         master_list.extend(self.get_submissions_from_link())
         logger.log(9, "Retrieved submissions for given links")
+        master_list.extend(self.get_submissions_from_file())
+        logger.log(9, "Retrieved submissions from file")
         return master_list
 
     def determine_directories(self):
@@ -314,6 +317,14 @@ class RedditConnector(metaclass=ABCMeta):
                 supplied_submissions.append(self.reddit_instance.submission(id=sub_id))
             else:
                 supplied_submissions.append(self.reddit_instance.submission(url=sub_id))
+        return [supplied_submissions]
+    
+    def get_submissions_from_file(self) -> list[list[praw.models.Submission]]:
+        supplied_submissions = []
+        with open(self.args.file, "r") as file:
+            reader = csv.reader(file)
+            for row in reader:
+                supplied_submissions.append(self.reddit_instance.submission(id=row[0]))
         return [supplied_submissions]
 
     def determine_sort_function(self) -> Callable:
