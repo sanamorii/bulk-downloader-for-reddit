@@ -60,7 +60,12 @@ class Resource:
 
     @staticmethod
     def http_download(url: str, download_parameters: dict) -> Optional[bytes]:
-        headers = download_parameters.get("headers")
+        # headers = download_parameters.get("headers")
+        headers = {
+            "user-agent": "curl/7.84.0",
+            "accept": "*/*"
+        }
+        
         current_wait_time = 60
         if "max_wait_time" in download_parameters:
             max_wait_time = download_parameters["max_wait_time"]
