@@ -321,7 +321,7 @@ class RedditConnector(metaclass=ABCMeta):
     
     def get_submissions_from_file(self) -> list[list[praw.models.Submission]]:
         supplied_submissions = []
-        with open(self.args.file, "r") as file:
+        with open(self.args.file, "r", encoding="utf8") as file:
             reader = csv.reader(file)
             for row in reader:
                 supplied_submissions.append(self.reddit_instance.submission(id=row[0]))
